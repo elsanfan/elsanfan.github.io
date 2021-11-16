@@ -24,7 +24,7 @@
 <meta property="og:description" content="今年初萌生了写个人博客的想法，主要是受到了网上许多优秀博客的吸引，在看到一篇篇优秀的博文之后，便想着自己也搭建一个属于自己博客。在了解了一些搭建博客的相关知识之后，我选择了用Hexo框架作为自己的主要博客写作工具。 为什么想要搭建个人博客正如开篇所说，想要写博客最初是受到了其他优秀博客的吸引，想要自己拥有一个个人博客，也有“这样很酷”、“学编程就应该写博客”这样的想法在。此外，我认为写博客也能够很">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-11-16T07:05:30.000Z">
-<meta property="article:modified_time" content="2021-11-16T14:08:26.011Z">
+<meta property="article:modified_time" content="2021-11-16T15:56:27.211Z">
 <meta property="article:author" content="闲卧庭前远看帆">
 <meta property="article:tag" content="Hexo">
 <meta name="twitter:card" content="summary_large_image">
@@ -213,7 +213,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5.3k 字
+      5.8k 字
     </span>
   
 
@@ -222,7 +222,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      17 分钟
+      18 分钟
     </span>
   
 
@@ -308,7 +308,9 @@
 <p>这样，sport 和 art同级，ball是sport的子类</p>
 <h3 id="3-添加about页面"><a href="#3-添加about页面" class="headerlink" title="3.添加about页面"></a>3.添加about页面</h3><p>特别注意的是，layout，该属性指定了文章的布局。默认的博客结构中是没有”about”页面的，但许多主题都会自带”about”页面，博客也通常有一个”about”页面来说明博客和作者的一些基本信息。</p>
 <p>在博客根目录打开命令行（可以用Git Bash），输入<code>hexo new page about</code> 新建一个about页面<br>在博客根目录的source文件夹中就会出现一个about文件夹，里面有一个index.md文件，在文件的Front Matter部分添加，layout: about 以此指定布局为”about page”，如果不指定，主题会默认这是自定义页面布局”custom page”。<br>再在，主题文件夹的”_config.yml”中启用about页面。（每个主题配置方法有所不同）</p>
-<h3 id="4-其他"><a href="#4-其他" class="headerlink" title="4.其他"></a>4.其他</h3><p>如果博客中经常用图片，可以搭配图床，方便管理，也不容易丢失图片。图床选择可参考博文：<br><a target="_blank" rel="noopener" href="https://blog.cyfan.top/p/eb490c73.html">图床的千层套路 <del>by陈YFの博客</del></a><br><em>我在寻找博客框架时，正好看到了该文作者的博客，使用的正是Hexo的Fluid主题，我才决定用Hexo的。看到的瞬间就喜欢上了</em></p>
+<h3 id="4-自定义域名"><a href="#4-自定义域名" class="headerlink" title="4.自定义域名"></a>4.自定义域名</h3><p>首先从域名提供商那购买一个域名，我是从阿里云买的域名，拥有域名之后，设置域名解析。在解析类型那选择 CNAME类型，这种类型是把购买的域名解析到另一个域名，正是我们需要的，因为我们已经有了GitHub Pages提供的 XXX.github.io域名了。把域名解析到 GitHub分配的域名。</p>
+<p>登录GitHub账号，在Pages的Custom site中填入刚刚完成解析的域名，点击save保存。<br>这时，仓库中多了一个“CNAME”文件，里面写的就是自定义的域名。<br>回到hexo博客根目录，打开source文件夹，新建一个文本文件，把自定义域名写入，保存。修改文件名为“CNAME”，注意没有后缀名，就叫CNAME。<br>回到博客根目录，修改_config.yml文件，在skip_render: 后面写上CNAME，注意冒号后有空格<br>skip_reder: 后面指定的文件，在渲染时会被跳过，这样一来，CNAME文件就不会在渲染时被修改。</p>
+<h3 id="5-其他"><a href="#5-其他" class="headerlink" title="5.其他"></a>5.其他</h3><p>如果博客中经常用图片，可以搭配图床，方便管理，也不容易丢失图片。图床选择可参考博文：<br><a target="_blank" rel="noopener" href="https://blog.cyfan.top/p/eb490c73.html">图床的千层套路 by陈YFの博客</a><br><em>我在寻找博客框架时，正好看到了该文作者的博客，使用的正是Hexo的Fluid主题，我才决定用Hexo的。看到的瞬间就喜欢上了</em></p>
 <p>需要评论等其他功能，也查找对应的第三方应用或插件。</p>
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>博客框架看了五六个，实际上手了两个框架，配置主题，修改主题，推送GitHub，自定义域名，修改样式，配置评论插件等等，折腾了一大圈，猛然觉察自己似乎偏离了搭博客的初心。其实纠结于用什么主题、什么框架并不重要，只要它能用，够用，不会随随便便出问题就行了，最主要是坚持写博客的毅力，持之以恒去写作。无论框架多么高级，界面多么优美，失去了内容的支撑，也不过是华而不实的空壳子。</p>
 <p>希望自己，坚持写作，用内容装点这费了些力气才搭建起的博客。</p>
