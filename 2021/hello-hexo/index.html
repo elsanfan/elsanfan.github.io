@@ -13,18 +13,18 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
+  <meta name="description" content="今年初萌生了写个人博客的想法，在看到网络上一篇篇优秀的博文之后，受到吸引，便想着自己也搭建一个属于自己博客。在了解了一些搭建博客的相关知识之后，我选择了用Hexo框架进行写作。">
   <meta name="author" content="闲卧庭前远看帆">
   <meta name="keywords" content="">
-  <meta name="description" content="今年初萌生了写个人博客的想法，主要是受到了网上许多优秀博客的吸引，在看到一篇篇优秀的博文之后，便想着自己也搭建一个属于自己博客。在了解了一些搭建博客的相关知识之后，我选择了用Hexo框架作为自己的主要博客写作工具。 为什么想要搭建个人博客正如开篇所说，想要写博客最初是受到了其他优秀博客的吸引，想要自己拥有一个个人博客，也有“这样很酷”、“学编程就应该写博客”这样的想法在。此外，我认为写博客也能够很">
+  <meta name="description" content="今年初萌生了写个人博客的想法，在看到网络上一篇篇优秀的博文之后，受到吸引，便想着自己也搭建一个属于自己博客。在了解了一些搭建博客的相关知识之后，我选择了用Hexo框架进行写作。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hello Hexo">
 <meta property="og:url" content="https://code.阿帆的小窝.top/2021/hello-hexo/index.html">
 <meta property="og:site_name" content="闲卧庭前远看帆的博客">
-<meta property="og:description" content="今年初萌生了写个人博客的想法，主要是受到了网上许多优秀博客的吸引，在看到一篇篇优秀的博文之后，便想着自己也搭建一个属于自己博客。在了解了一些搭建博客的相关知识之后，我选择了用Hexo框架作为自己的主要博客写作工具。 为什么想要搭建个人博客正如开篇所说，想要写博客最初是受到了其他优秀博客的吸引，想要自己拥有一个个人博客，也有“这样很酷”、“学编程就应该写博客”这样的想法在。此外，我认为写博客也能够很">
+<meta property="og:description" content="今年初萌生了写个人博客的想法，在看到网络上一篇篇优秀的博文之后，受到吸引，便想着自己也搭建一个属于自己博客。在了解了一些搭建博客的相关知识之后，我选择了用Hexo框架进行写作。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-11-16T07:05:30.000Z">
-<meta property="article:modified_time" content="2021-11-16T15:56:27.211Z">
+<meta property="article:modified_time" content="2021-11-17T02:02:59.390Z">
 <meta property="article:author" content="闲卧庭前远看帆">
 <meta property="article:tag" content="Hexo">
 <meta name="twitter:card" content="summary_large_image">
@@ -66,7 +66,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"code.xn--yetp9bp76b6xdqv7b.top","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":80,"cursorChar":"|","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"code.xn--yetp9bp76b6xdqv7b.top","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":80,"cursorChar":"|","loop":true},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -98,7 +98,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                首页
+                主页
               </a>
             </li>
           
@@ -107,35 +107,39 @@
           
           
           
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文章
               </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                分类
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    标签
+                  </a>
+                
+              </div>
             </li>
           
         
@@ -213,7 +217,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5.8k 字
+      5.7k 字
     </span>
   
 
@@ -259,12 +263,14 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年11月16日 晚上
+                  本文最后更新于：2021年11月17日 上午
                 
               </p>
             
             <div class="markdown-body">
-              <p>今年初萌生了写个人博客的想法，主要是受到了网上许多优秀博客的吸引，在看到一篇篇优秀的博文之后，便想着自己也搭建一个属于自己博客。在了解了一些搭建博客的相关知识之后，我选择了用Hexo框架作为自己的主要博客写作工具。</p>
+              <p>今年初萌生了写个人博客的想法，在看到网络上一篇篇优秀的博文之后，受到吸引，便想着自己也搭建一个属于自己博客。在了解了一些搭建博客的相关知识之后，我选择了用Hexo框架进行写作。</p>
+<span id="more"></span>
+
 <h1 id="为什么想要搭建个人博客"><a href="#为什么想要搭建个人博客" class="headerlink" title="为什么想要搭建个人博客"></a>为什么想要搭建个人博客</h1><p>正如开篇所说，想要写博客最初是受到了其他优秀博客的吸引，想要自己拥有一个个人博客，也有“这样很酷”、“学编程就应该写博客”这样的想法在。此外，我认为写博客也能够很好的帮助我，梳理学习过程中的思路，为知识做系统性的总结和归纳。很多时候，好像明白了一个知识点，但下笔记录，系统梳理的时候总是能发现很多的不足，这时候我才意识到，自己原来知识“似懂非懂”。</p>
 <p>同样是记录学习过程，整理自己的知识体系，笔记也能够承担相应的职能，为什么非要写博客呢？对此我看到过很多的观点，有人觉得博客搭建之后更加直观，笔记查看不如博客来的方便，有人认为博客更便于分享等等。这些都是促使我选择博客的原因之一，但最重要的是，写博客带给我一种“仪式感”。我花费了时间精力，学习怎么搭建博客，排除了过程中的种种问题，最后搭建了一个博客，自然不会轻易的将它荒废掉。或许这就是，“不是轻易得到的，往往更加珍惜吧”。</p>
 <p>确定了写博客的目标，那么在哪写博客呢？像是CSND、博客园、简书等都是很经典的博客写作平台，我在查资料的时候，经常从这些平台搜寻相关博文，它们也帮助我解答了许多学习遇到的困难。但，它们有着界面不简洁，有强制广告区等问题。这也无可厚非，毕竟是需要盈利的平台。但出于个人书写的需要，我希望除了自己的文章和笔记之外，没有广告推广之类的干扰。那么搭建一个个人博客，就是一个不错的选择。</p>
@@ -414,7 +420,7 @@
 
   <footer class="text-center mt-5 py-3">
   <div class="footer-content">
-     <i class="iconfont icon-copyright"></i> 2021 闲卧庭前远看帆 </br> Powered by <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> Theme <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <i class="iconfont icon-love"></i> 
+     <i class="iconfont icon-copyright"></i> 2021 闲卧庭前远看帆 </br> 封面及部分配图源自互联网 仅作美化之用 版权归图片原作者所有 如有侵权请通过关于页头像下方邮箱联系 侵权作品会被删除</br> Powered by <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> Theme <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <i class="iconfont icon-love"></i> 
   </div>
   
 
