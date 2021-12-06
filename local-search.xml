@@ -4,6 +4,33 @@
   
   
   <entry>
+    <title>C++语法笔记</title>
+    <link href="/2021/Cpp-Note01/"/>
+    <url>/2021/Cpp-Note01/</url>
+    
+    <content type="html"><![CDATA[<p>C++语法学习记录，做一个系统性梳理。</p><span id="more"></span><h1 id="C-学习路线"><a href="#C-学习路线" class="headerlink" title="C++学习路线"></a>C++学习路线</h1><h2 id="C-语言学习"><a href="#C-语言学习" class="headerlink" title="C++语言学习"></a>C++语言学习</h2><p>面向对象编程思想；<br>类的封装，构造和析构、静态成员、对象管理；<br>类的构造(有参构造函数、无参构造、拷贝构造、默认构造函数)和析构；<br>对象动态管理、友元函数、友元类、操作符重载；<br>C++编译器对象管理模型分析；<br>类对象的动态管理(new/delete)；<br>友元函数和友元类；<br>运算符重载(一元运算符、二元运算符、运算符重载难点、项目开发中的运算符重载)；<br>类的继承、多继承及其二义性、虚继承；<br>多态(概念、意义、原理剖析、多态案例)；<br>虚函数、纯虚函数、抽象类(面向抽象类编程思想案例)；<br>函数模板、类模板，模板的继承；<br>C++类型转换；<br>C++输入输出流(标准I/O文件I/O 字符流I/O)；<br>C++异常处理(异常机制、异常类型、异常变量、异常层次结构、标准异常库)</p><h2 id="C-开发"><a href="#C-开发" class="headerlink" title="C++开发"></a>C++开发</h2><ol><li>STL</li><li>设计模式</li><li>数据结构基础<br>顺序存储、链式存储、循环链表；<br>双向链表、栈(顺序和链式)、队列(顺序和链式)；<br>栈的应用、树基本概念及遍历、二叉树；<br>排序算法、并归算法、选择、插入、快速、希尔</li><li>UI界面开发</li><li>Unix/Linux网络服务器</li><li>数据库开发</li></ol><p><img src="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo@main/img/C++_StudyPath.png"></p><h1 id="C-语法"><a href="#C-语法" class="headerlink" title="C++语法"></a>C++语法</h1>]]></content>
+    
+    
+    <categories>
+      
+      <category>学习笔记</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>C++</tag>
+      
+      <tag>Note</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>博客成长记</title>
     <link href="/2021/blog-building/"/>
     <url>/2021/blog-building/</url>
