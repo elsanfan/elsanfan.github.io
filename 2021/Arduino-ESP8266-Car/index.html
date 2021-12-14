@@ -1,0 +1,612 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="简单介绍如何利用Arduino单片和ESP8266开发板，结合物联网云平台，制作一款能远程遥控的小车。KeyWords：单片机控制、WiFi、远程遥控、手机App">
+  <meta name="author" content="闲卧庭前远看帆">
+  <meta name="keywords" content="">
+  <meta name="description" content="简单介绍如何利用Arduino单片和ESP8266开发板，结合物联网云平台，制作一款能远程遥控的小车。KeyWords：单片机控制、WiFi、远程遥控、手机App">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Arduino+ESP8266的远程控制小车">
+<meta property="og:url" content="https://code.阿帆的小窝.top/2021/Arduino-ESP8266-Car/index.html">
+<meta property="og:site_name" content="闲卧庭前远看帆的博客">
+<meta property="og:description" content="简单介绍如何利用Arduino单片和ESP8266开发板，结合物联网云平台，制作一款能远程遥控的小车。KeyWords：单片机控制、WiFi、远程遥控、手机App">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/202111071605373.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/202111071605635.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/202111071606505.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/202111071610875.jpg">
+<meta property="article:published_time" content="2021-06-10T10:21:07.000Z">
+<meta property="article:modified_time" content="2021-12-14T12:02:24.161Z">
+<meta property="article:author" content="闲卧庭前远看帆">
+<meta property="article:tag" content="Arduino">
+<meta property="article:tag" content="物联网">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/202111071605373.png">
+  
+  <title>Arduino+ESP8266的远程控制小车 - 闲卧庭前远看帆的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"code.xn--yetp9bp76b6xdqv7b.top","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":80,"cursorChar":"|","loop":true},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>闲卧庭前远看帆の博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                主页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文章
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/202111071703048.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Arduino+ESP8266的远程控制小车">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      闲卧庭前远看帆
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-06-10 18:21" pubdate>
+        2021年6月10日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      9.8k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      31 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Arduino+ESP8266的远程控制小车</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2021年12月14日 晚上
+                
+              </p>
+            
+            <div class="markdown-body">
+              <p>简单介绍如何利用Arduino单片和ESP8266开发板，结合物联网云平台，制作一款能远程遥控的小车。<br>KeyWords：单片机控制、WiFi、远程遥控、手机App</p>
+<span id="more"></span>
+
+<h1 id="Arduino-ESP8266的远程控制小车"><a href="#Arduino-ESP8266的远程控制小车" class="headerlink" title="Arduino+ESP8266的远程控制小车"></a>Arduino+ESP8266的远程控制小车</h1><h2 id="硬件选型"><a href="#硬件选型" class="headerlink" title="硬件选型"></a>硬件选型</h2><h3 id="小车主控板：Arduino-UNO"><a href="#小车主控板：Arduino-UNO" class="headerlink" title="小车主控板：Arduino UNO"></a>小车主控板：Arduino UNO</h3><p>​        Aruduino平台于2005年诞生，两位就职于米兰设计学院的教授，希望开发一款具有软件开发功能的开源的硬件实验平台，于是在他们的合作下，Arduino应运而生。Arduino的编程的语言脱胎于C，如果你有了C语言的学习经验的话，在了解了基本的语言特点和语法之后，便能够非常快速的在Arduino上进行独立的开发工作。关于Arduino的语言，主要有一下两部分，其一是setup()函数，该函数的作用只要在于对系统进行初始化，对相应的引脚进行定义，比如设置输入还是输出模式。第二部分是loop()函数，该函数是用来编写对应的功能的，同时loop()函数将启动硬件部分。不仅如此，Arduino拥有丰富的库文件，分为：官方提供和开发者自定义两种类型。 </p>
+<p>​        正如上文提到的，Arduino同时兼具软件开发的功能，拥有着自己的软件开发环境——Arduino IDE。它最为显著的特点就是可以跨多个平台运行，极大方便了使用。目前支持的平台包括：Linux、Windows和MacOS等。Arduino IDE是针对Arduino开发板的一个集成开源的编译软件，操作界面简单、语言风格与C语言相近、使用的库文件是开源的并且简单的代码可以直接通过串口进行下载。对于使用Arduino的开发者来说，这是一款首选的开发环境。<br>   <img src="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/202111071605373.png" srcset="/img/loading.gif" lazyload alt="ArduinoIDE"></p>
+<p>​        ArduinoIDE是基于processing IDE开发的，是初学者十分的友好，能够快速的掌握，并具有很高的灵活性。Arduino的语言对于avr-gcc库二次封装，因而不需要太多的单片机和编程基础，便可以进行快速的开发。它的工作流程为，在开发者编写好代码，编译后，将语言转换成C++，再用avr-gcc将编译语言转换成二进制，这样一来，开发者编写的内容才能够背Arduino的硬件识别，程序才能够运行。这串代码通过USB接口连接到电脑，再上传到Arduino的存储器进行存储。</p>
+<p>​        在开发者使用Arduino IDE的时候，要做好以下的准备工作：在PC端下载对应硬件的驱动，选择合适的端口。这些步骤完成之后，便可开始程序的编写。Arduino还有第三方的图形化编程软件，极大地降低了对开发者的编程能力的要求，只要能够符合逻辑的设计出功能，按照规定的方式设置对应的参数，便可以下载程序到硬件开发板进行使用。</p>
+<p><a target="_blank" rel="noopener" href="https://www.arduino.cc/en/software">Arduino软件下载</a><br><a target="_blank" rel="noopener" href="https://www.arduino.cn/">Arduino中文社区</a></p>
+<p>​        小车选用的是Arduino UNO的开发板，搭载芯片为ATmega328p。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/202111071605635.png" srcset="/img/loading.gif" lazyload alt="ArduinoUNO"></p>
+<p>​        同时为了方便对控制小车其他配件，选用了一块配套的功能转接板，如下所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/202111071606505.png" srcset="/img/loading.gif" lazyload alt="功能转接板"></p>
+<p>​                                                                                                        </p>
+<h3 id="远程连接模块：ESP8266开发板"><a href="#远程连接模块：ESP8266开发板" class="headerlink" title="远程连接模块：ESP8266开发板"></a>远程连接模块：ESP8266开发板</h3><p>小车采用ESP-12E开发板（NoteMCU）作为WIFI连接的模块，通过该块开发板连接物联网云平台，实现远程的控制实现。<br>        <img src="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/202111071610875.jpg" srcset="/img/loading.gif" lazyload alt="EPS8266">    </p>
+<h3 id="其他配件"><a href="#其他配件" class="headerlink" title="其他配件"></a>其他配件</h3><p>小车还需要的配件包括：四个直流电机，底盘，车轮，螺丝（若干），铜柱（若干），电池盒，可充电电池。</p>
+<h2 id="云平台选择——点灯科技（Blinker）"><a href="#云平台选择——点灯科技（Blinker）" class="headerlink" title="云平台选择——点灯科技（Blinker）"></a>云平台选择——点灯科技（Blinker）</h2><p><a target="_blank" rel="noopener" href="https://www.diandeng.tech/home">官网首页</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.diandeng.tech/doc">开发文档</a></p>
+<h2 id="远程控制设计"><a href="#远程控制设计" class="headerlink" title="远程控制设计"></a>远程控制设计</h2><h3 id="小车控制"><a href="#小车控制" class="headerlink" title="小车控制"></a>小车控制</h3><p>远程控制功能主要分为两个主要部分，分别是对小车的动作控制和云平台连接。</p>
+<p>小车的行动通过控制电机的转速来实现，单片机的I/O口输出不同的信号，改变驱动电路中PWM的比例值，进而对电机的转速进行调控。将对应的电机状态用函数进行封装，配合不同指令调用对应的函数来实现对小车的控制。</p>
+<p>小车基本动作的函数如下表所示：</p>
+<p>​                                                                                        小车基本动作函数</p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>功能</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>run()</td>
+<td>小车向前进</td>
+<td>左右电机前进</td>
+</tr>
+<tr>
+<td>brake()</td>
+<td>小车停止</td>
+<td>左右电机停止</td>
+</tr>
+<tr>
+<td>left()</td>
+<td>小车左转</td>
+<td>右电机前进左电机停止</td>
+</tr>
+<tr>
+<td>right()</td>
+<td>小车右转</td>
+<td>右电机停止左电机前进</td>
+</tr>
+<tr>
+<td>back()</td>
+<td>小车后退</td>
+<td>左右电机反转</td>
+</tr>
+</tbody></table>
+<h3 id="云平台连接"><a href="#云平台连接" class="headerlink" title="云平台连接"></a>云平台连接</h3><p>云平台远程连接采用ESP-12E开发板实现，首先通过ESP-12E板和物联网云平台（采用的是Blinker平台）进行远程连接，首先给开发板刷入Blinker的固件，当设备连接启动后，Arduino板通过串口向ESP-12E开发板发送AT指令，进行WIFI连接。连接成功后，就可以通过手机端向云平台发送指令，再由云平台发送给ESP-12E，Arduino通过串口读取指令，调用相应的动作函数。</p>
+<p>​                                                                                            AT指令字段说明</p>
+<table>
+<thead>
+<tr>
+<th>AT指令</th>
+<th>BLINKER_WIFI=0</th>
+<th>3275431b24545</th>
+<th>f55</th>
+<th>bruce6545555</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>说明</td>
+<td>模块工作于透传模式</td>
+<td>绑定设备的密钥</td>
+<td>WIFI名称</td>
+<td>WIFI密码</td>
+</tr>
+</tbody></table>
+<p>Bilnker云平台远程连接，主要分为新建组件、设置回调函数、绑定组件与回调函数三个步骤，主要的函数说明如下。</p>
+<p>​                                                                                        远程连接主要函数说明</p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>功能</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BlinkerButton ButtonRun(“btn-run”);</td>
+<td>创建Button对象，键值为“btn-run”</td>
+<td>对应Blinker app上的按键控件</td>
+</tr>
+<tr>
+<td>void  buttonRun_callback(const String &amp; state)</td>
+<td>获取按键的状态</td>
+<td>根据按键的触发状态执行对应语句</td>
+</tr>
+<tr>
+<td>ButtonRun.attach(buttonRun_callback)</td>
+<td>绑定控件和对应的回调函数</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h2><h3 id="小车控制部分"><a href="#小车控制部分" class="headerlink" title="小车控制部分"></a>小车控制部分</h3><figure class="highlight c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c"><span class="hljs-comment">/***********************************************</span><br><span class="hljs-comment">  前进  按下发出 ONA  </span><br><span class="hljs-comment">  后退：按下发出 ONB  </span><br><span class="hljs-comment">  左转：按下发出 ONC  </span><br><span class="hljs-comment">  右转：按下发出 OND  </span><br><span class="hljs-comment">  停止：按下发出 ONE  </span><br><span class="hljs-comment">************************************************/</span><br><span class="hljs-keyword">int</span> Left_motor=<span class="hljs-number">8</span>;     <span class="hljs-comment">//左电机(IN3) 输出0  前进   输出1 后退</span><br><span class="hljs-keyword">int</span> Left_motor_pwm=<span class="hljs-number">9</span>;     <span class="hljs-comment">//左电机PWM调速</span><br><br><span class="hljs-keyword">int</span> Right_motor=<span class="hljs-number">11</span>;    <span class="hljs-comment">//右电机(IN1)  输出0  前进   输出1 后退</span><br><span class="hljs-keyword">int</span> Right_motor_pwm=<span class="hljs-number">10</span>;    <span class="hljs-comment">// 右电机PWM调速</span><br><br><span class="hljs-keyword">char</span> buffer[<span class="hljs-number">18</span>];		<span class="hljs-comment">//串口缓冲区的字符数组</span><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span>			  <span class="hljs-comment">//设定串口和引脚模式</span></span><br><span class="hljs-function"></span>&#123;<br>     Serial.begin(<span class="hljs-number">9600</span>);<br>     Serial.flush();		<span class="hljs-comment">//清空串口缓存</span><br>     <br>     Serial.println(<span class="hljs-string">&quot;AT+BLINKER_WIFI=0,3275431b255e,f55,bruce6545555&quot;</span>);<br><br>     pinMode(Left_motor,OUTPUT); <span class="hljs-comment">// PIN 8 8脚无PWM功能</span><br>     pinMode(Left_motor_pwm,OUTPUT); <span class="hljs-comment">// PIN 9 (PWM)</span><br>     pinMode(Right_motor_pwm,OUTPUT);<span class="hljs-comment">// PIN 10 (PWM) </span><br>     pinMode(Right_motor,OUTPUT);<span class="hljs-comment">// PIN 11 </span><br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span>     <span class="hljs-comment">// 前进</span></span><br><span class="hljs-function"></span>&#123;<br>  digitalWrite(Right_motor,LOW);  <span class="hljs-comment">// 右电机前进</span><br>  digitalWrite(Right_motor_pwm,HIGH);  <span class="hljs-comment">// 右电机前进     </span><br>  analogWrite(Right_motor_pwm,<span class="hljs-number">90</span>);<span class="hljs-comment">//PWM比例0~255调速，左右轮差异略增减</span><br>  <br>  <br>  digitalWrite(Left_motor,LOW);  <span class="hljs-comment">// 左电机前进</span><br>  digitalWrite(Left_motor_pwm,HIGH);  <span class="hljs-comment">//左电机PWM     </span><br>  analogWrite(Left_motor_pwm,<span class="hljs-number">90</span>);<span class="hljs-comment">//PWM比例0~255调速，左右轮差异略增减</span><br>  <span class="hljs-comment">//delay(time * 100);   //执行时间，可以调整  </span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">brake</span><span class="hljs-params">()</span>         <span class="hljs-comment">//刹车，停车</span></span><br><span class="hljs-function"></span>&#123;<br>  <br>  digitalWrite(Right_motor_pwm,LOW);  <span class="hljs-comment">// 右电机PWM 调速输出0      </span><br>  analogWrite(Right_motor_pwm,<span class="hljs-number">0</span>);<span class="hljs-comment">//PWM比例0~255调速，左右轮差异略增减</span><br><br>  digitalWrite(Left_motor_pwm,LOW);  <span class="hljs-comment">//左电机PWM 调速输出0          </span><br>  analogWrite(Left_motor_pwm,<span class="hljs-number">0</span>);<span class="hljs-comment">//PWM比例0~255调速，左右轮差异略增减</span><br>  <span class="hljs-comment">//delay(time * 100);//执行时间，可以调整  </span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">left</span><span class="hljs-params">()</span>         <span class="hljs-comment">//左转(左轮不动，右轮前进)</span></span><br><span class="hljs-function"></span>&#123;<br>   digitalWrite(Right_motor,LOW);  <span class="hljs-comment">// 右电机前进</span><br>  digitalWrite(Right_motor_pwm,HIGH);  <span class="hljs-comment">// 右电机前进     </span><br>  analogWrite(Right_motor_pwm,<span class="hljs-number">110</span>);<span class="hljs-comment">//PWM比例0~255调速，左右轮差异略增减</span><br>  <br>  <br>  digitalWrite(Left_motor,LOW);  <span class="hljs-comment">// 左电机前进</span><br>  digitalWrite(Left_motor_pwm,LOW);  <span class="hljs-comment">//左电机PWM     </span><br>  analogWrite(Left_motor_pwm,<span class="hljs-number">0</span>);<span class="hljs-comment">//PWM比例0~255调速，左右轮差异略增减</span><br>  <span class="hljs-comment">//delay(time * 100);	//执行时间，可以调整  </span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">spin_left</span><span class="hljs-params">()</span>         <span class="hljs-comment">//左转(左轮后退，右轮前进)</span></span><br><span class="hljs-function"></span>&#123;<br>  digitalWrite(Right_motor,LOW);  <span class="hljs-comment">// 右电机前进</span><br>  digitalWrite(Right_motor_pwm,HIGH);  <span class="hljs-comment">// 右电机前进     </span><br>  analogWrite(Right_motor_pwm,<span class="hljs-number">90</span>);<span class="hljs-comment">//PWM比例0~255调速，左右轮差异略增减</span><br>  <br>  digitalWrite(Left_motor,HIGH);  <span class="hljs-comment">// 左电机后退</span><br>  digitalWrite(Left_motor_pwm,HIGH);  <span class="hljs-comment">//左电机PWM     </span><br>  analogWrite(Left_motor_pwm,<span class="hljs-number">90</span>);<span class="hljs-comment">//PWM比例0~255调速，左右轮差异略增减</span><br>  <span class="hljs-comment">//delay(time * 100);	//执行时间，可以调整  </span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">right</span><span class="hljs-params">()</span>        <span class="hljs-comment">//右转(右轮不动，左轮前进)</span></span><br><span class="hljs-function"></span>&#123;<br>   digitalWrite(Right_motor,LOW);  <span class="hljs-comment">// 右电机不转</span><br>  digitalWrite(Right_motor_pwm,LOW);  <span class="hljs-comment">// 右电机PWM输出0     </span><br>  analogWrite(Right_motor_pwm,<span class="hljs-number">0</span>);<span class="hljs-comment">//PWM比例0~255调速，左右轮差异略增减</span><br>  <br>  <br>  digitalWrite(Left_motor,LOW);  <span class="hljs-comment">// 左电机前进</span><br>  digitalWrite(Left_motor_pwm,HIGH);  <span class="hljs-comment">//左电机PWM     </span><br>  analogWrite(Left_motor_pwm,<span class="hljs-number">110</span>);<span class="hljs-comment">//PWM比例0~255调速，左右轮差异略增减</span><br>  <span class="hljs-comment">//delay(time * 100);	//执行时间，可以调整  </span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">spin_right</span><span class="hljs-params">()</span>        <span class="hljs-comment">//右转(右轮后退，左轮前进)</span></span><br><span class="hljs-function"></span>&#123;<br>  digitalWrite(Right_motor,HIGH);  <span class="hljs-comment">// 右电机后退</span><br>  digitalWrite(Right_motor_pwm,HIGH);  <span class="hljs-comment">// 右电机PWM输出1     </span><br>  analogWrite(Right_motor_pwm,<span class="hljs-number">50</span>);<span class="hljs-comment">//PWM比例0~255调速，左右轮差异略增减</span><br>  <br>  <br>  digitalWrite(Left_motor,LOW);  <span class="hljs-comment">// 左电机前进</span><br>  digitalWrite(Left_motor_pwm,HIGH);  <span class="hljs-comment">//左电机PWM     </span><br>  analogWrite(Left_motor_pwm,<span class="hljs-number">50</span>);<span class="hljs-comment">//PWM比例0~255调速，左右轮差异略增减</span><br>  <span class="hljs-comment">//delay(time * 100);	//执行时间，可以调整    </span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">back</span><span class="hljs-params">()</span>          <span class="hljs-comment">//后退</span></span><br><span class="hljs-function"></span>&#123;<br>  digitalWrite(Right_motor,HIGH);  <span class="hljs-comment">// 右电机后退</span><br>  digitalWrite(Right_motor_pwm,HIGH);  <span class="hljs-comment">// 右电机前进     </span><br>  analogWrite(Right_motor_pwm,<span class="hljs-number">90</span>);<span class="hljs-comment">//PWM比例0~255调速，左右轮差异略增减</span><br>  <br>  <br>  digitalWrite(Left_motor,HIGH);  <span class="hljs-comment">// 左电机后退</span><br>  digitalWrite(Left_motor_pwm,HIGH);  <span class="hljs-comment">//左电机PWM     </span><br>  analogWrite(Left_motor_pwm,<span class="hljs-number">90</span>);<span class="hljs-comment">//PWM比例0~255调速，左右轮差异略增减</span><br>  <span class="hljs-comment">//delay(time * 100);   //执行时间，可以调整    </span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">if</span>(Serial.available() &gt; <span class="hljs-number">0</span>)	<span class="hljs-comment">//Serial.available()返回串口收到的字节数</span><br>    &#123;<br>       <span class="hljs-keyword">int</span> index = <span class="hljs-number">0</span>;<br>       delay(<span class="hljs-number">100</span>);		<span class="hljs-comment">//延时等待串口收完数据，否则刚收到1个字节时就会执行后续程序</span><br>       <span class="hljs-keyword">int</span> numChar = Serial.available();	<br>       <span class="hljs-keyword">if</span>(numChar &gt; <span class="hljs-number">15</span>)		<span class="hljs-comment">//确认数据不会溢出，应当小于缓冲大小</span><br>       &#123;<br>         numChar = <span class="hljs-number">15</span>;<br>        &#125;<br>       <span class="hljs-keyword">while</span>(numChar--)<br>      &#123;<br>          buffer[index++] = Serial.read();	<span class="hljs-comment">//将串口数据一字一字的存入缓冲</span><br>      &#125;<br>      Serial.println(buffer);<br>      splitString(buffer);				<span class="hljs-comment">//字符串分割</span><br>    &#125;<br>    <br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">splitString</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *data)</span></span><br><span class="hljs-function"></span>&#123;<br>       Serial.print(<span class="hljs-string">&quot;Data entered:&quot;</span>);<br>       Serial.println(data);<br>       <span class="hljs-keyword">char</span> *parameter;<br>       parameter = strtok(data, <span class="hljs-string">&quot; ,&quot;</span>);<span class="hljs-comment">//string token，将data按照空格或者,进行分割并截取</span><br>       Serial.println(parameter);<br>    <span class="hljs-keyword">while</span>(parameter != <span class="hljs-literal">NULL</span>)<br>  &#123;<br>    setMove(parameter);<br>    parameter = strtok(<span class="hljs-literal">NULL</span>, <span class="hljs-string">&quot; ,&quot;</span>);	<span class="hljs-comment">//string token，再次分割并截取，直至截取后的字符为空</span><br>    Serial.println(parameter);			<br>   &#125;<br>   <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> x = <span class="hljs-number">0</span>; x &lt; <span class="hljs-number">16</span>; x++)			<span class="hljs-comment">//清空缓冲</span><br>  &#123;<br>   buffer[x] = <span class="hljs-string">&#x27;\0&#x27;</span>;<br>  &#125;<br>     Serial.flush();<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setMove</span><span class="hljs-params">(<span class="hljs-keyword">char</span> *data)</span></span><br><span class="hljs-function"></span>&#123;<br>   <span class="hljs-keyword">if</span>((data[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;O&#x27;</span>) &amp;&amp; (data[<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;N&#x27;</span>)&amp;&amp; (data[<span class="hljs-number">2</span>] == <span class="hljs-string">&#x27;A&#x27;</span>))<br>   &#123;<br>    Serial.println(<span class="hljs-string">&quot;go forward!&quot;</span>); <br>      run();<br>  &#125;<br>  <span class="hljs-keyword">if</span>((data[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;O&#x27;</span>) &amp;&amp; (data[<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;N&#x27;</span>)&amp;&amp; (data[<span class="hljs-number">2</span>] == <span class="hljs-string">&#x27;B&#x27;</span>))<br>   &#123;<br>    Serial.println(<span class="hljs-string">&quot;go back!&quot;</span>); <br>      back(); <br> &#125;<br>    <span class="hljs-keyword">if</span>((data[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;O&#x27;</span>) &amp;&amp; (data[<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;N&#x27;</span>)&amp;&amp; (data[<span class="hljs-number">2</span>] == <span class="hljs-string">&#x27;C&#x27;</span>))<br>   &#123;<br>      Serial.println(<span class="hljs-string">&quot;go left!&quot;</span>); <br>      left();<br>  &#125;<br>    <span class="hljs-keyword">if</span>((data[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;O&#x27;</span>) &amp;&amp; (data[<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;N&#x27;</span>)&amp;&amp; (data[<span class="hljs-number">2</span>] == <span class="hljs-string">&#x27;D&#x27;</span>))<br>   &#123;<br>     Serial.println(<span class="hljs-string">&quot;go right!&quot;</span>); <br>      right(); <br>  &#125;<br>    <span class="hljs-keyword">if</span>((data[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;O&#x27;</span>) &amp;&amp; (data[<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;N&#x27;</span>)&amp;&amp; (data[<span class="hljs-number">2</span>] == <span class="hljs-string">&#x27;E&#x27;</span>))<br>   &#123;<br>      Serial.println(<span class="hljs-string">&quot;Stop!&quot;</span>); <br>      brake(); <br>  &#125;<br>    <span class="hljs-keyword">if</span>((data[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;O&#x27;</span>) &amp;&amp; (data[<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;N&#x27;</span>)&amp;&amp; (data[<span class="hljs-number">2</span>] == <span class="hljs-string">&#x27;F&#x27;</span>))<br>   &#123;<br>    Serial.println(<span class="hljs-string">&quot;Stop!&quot;</span>); <br>     brake();  <br>   &#125;<br>   <br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+<h3 id="远程连接部分（烧制在ESP-12E开发板）"><a href="#远程连接部分（烧制在ESP-12E开发板）" class="headerlink" title="远程连接部分（烧制在ESP-12E开发板）"></a>远程连接部分（烧制在ESP-12E开发板）</h3><figure class="highlight c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> BLINKER_AT_MQTT</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;Blinker.h&gt;</span></span><br><br><span class="hljs-comment">// 新建组件对象</span><br><span class="hljs-function">BlinkerButton <span class="hljs-title">ButtonRun</span><span class="hljs-params">(<span class="hljs-string">&quot;btn-run&quot;</span>)</span></span>;<br><span class="hljs-function">BlinkerButton <span class="hljs-title">ButtonBack</span><span class="hljs-params">(<span class="hljs-string">&quot;btn-back&quot;</span>)</span></span>;<br><span class="hljs-function">BlinkerButton <span class="hljs-title">ButtonLeft</span><span class="hljs-params">(<span class="hljs-string">&quot;btn-left&quot;</span>)</span></span>;<br><span class="hljs-function">BlinkerButton <span class="hljs-title">ButtonRight</span><span class="hljs-params">(<span class="hljs-string">&quot;btn-right&quot;</span>)</span></span>;<br><span class="hljs-function">BlinkerButton <span class="hljs-title">ButtonStop</span><span class="hljs-params">(<span class="hljs-string">&quot;btn-stop&quot;</span>)</span></span>;<br><span class="hljs-function">BlinkerButton <span class="hljs-title">ButtonOn</span><span class="hljs-params">(<span class="hljs-string">&quot;btn-on&quot;</span>)</span></span>;<br><span class="hljs-function">BlinkerButton <span class="hljs-title">ButtonOff</span><span class="hljs-params">(<span class="hljs-string">&quot;btn-off&quot;</span>)</span></span>;<br><span class="hljs-keyword">int</span> counter = <span class="hljs-number">0</span>;<br><br><span class="hljs-comment">// 按键回调函数</span><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">buttonRun_callback</span><span class="hljs-params">(<span class="hljs-keyword">const</span> String &amp; state)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">if</span> (state == BLINKER_CMD_BUTTON_PRESSED)&#123;<br>     Serial.write(<span class="hljs-string">&quot;ONA&quot;</span>);<br>  &#125;<br>  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (state == BLINKER_CMD_BUTTON_RELEASED)&#123;<br>     Serial.write(<span class="hljs-string">&quot;ONE&quot;</span>);<br>  &#125;<br>  <span class="hljs-keyword">else</span>&#123;<br>      Serial.write(<span class="hljs-string">&quot;ONA&quot;</span>);<br>      delay(<span class="hljs-number">1000</span>);<br>      Serial.write(<span class="hljs-string">&quot;ONE&quot;</span>); <br>  &#125;<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">buttonBack_callback</span><span class="hljs-params">(<span class="hljs-keyword">const</span> String &amp; state)</span></span><br><span class="hljs-function"></span>&#123;<br>   <span class="hljs-keyword">if</span> (state == BLINKER_CMD_BUTTON_PRESSED)&#123;<br>     Serial.write(<span class="hljs-string">&quot;ONB&quot;</span>);<br>  &#125;<br>  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (state == BLINKER_CMD_BUTTON_RELEASED)&#123;<br>     Serial.write(<span class="hljs-string">&quot;ONE&quot;</span>);<br>  &#125;<br>  <span class="hljs-keyword">else</span>&#123;<br>      Serial.write(<span class="hljs-string">&quot;ONB&quot;</span>);<br>      delay(<span class="hljs-number">1000</span>);<br>      Serial.write(<span class="hljs-string">&quot;ONE&quot;</span>); <br>  &#125;<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">buttonLeft_callback</span><span class="hljs-params">(<span class="hljs-keyword">const</span> String &amp; state)</span></span><br><span class="hljs-function"></span>&#123;<br>   <span class="hljs-keyword">if</span> (state == BLINKER_CMD_BUTTON_PRESSED)&#123;<br>     Serial.write(<span class="hljs-string">&quot;ONC&quot;</span>);<br>  &#125;<br>  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (state == BLINKER_CMD_BUTTON_RELEASED)&#123;<br>     Serial.write(<span class="hljs-string">&quot;ONE&quot;</span>);<br>  &#125;<br>  <span class="hljs-keyword">else</span>&#123;<br>      Serial.write(<span class="hljs-string">&quot;ONC&quot;</span>);<br>      delay(<span class="hljs-number">1000</span>);<br>      Serial.write(<span class="hljs-string">&quot;ONE&quot;</span>); <br>  &#125;<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">buttonRight_callback</span><span class="hljs-params">(<span class="hljs-keyword">const</span> String &amp; state)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">if</span> (state == BLINKER_CMD_BUTTON_PRESSED)&#123;<br>     Serial.write(<span class="hljs-string">&quot;OND&quot;</span>);<br>  &#125;<br>  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (state == BLINKER_CMD_BUTTON_RELEASED)&#123;<br>     Serial.write(<span class="hljs-string">&quot;ONE&quot;</span>);<br>  &#125;<br>  <span class="hljs-keyword">else</span>&#123;<br>      Serial.write(<span class="hljs-string">&quot;OND&quot;</span>);<br>      delay(<span class="hljs-number">1000</span>);<br>      Serial.write(<span class="hljs-string">&quot;ONE&quot;</span>); <br>  &#125;<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">buttonStop_callback</span><span class="hljs-params">(<span class="hljs-keyword">const</span> String &amp; state)</span></span><br><span class="hljs-function"></span>&#123;<br>   Serial.write(<span class="hljs-string">&quot;ONE&quot;</span>);<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">buttonOn_callback</span><span class="hljs-params">(<span class="hljs-keyword">const</span> String &amp; state)</span></span><br><span class="hljs-function"></span>&#123;<br>   digitalWrite(<span class="hljs-number">2</span>,LOW);<br>   Serial.write(<span class="hljs-string">&quot;ONF&quot;</span>);<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">buttonOff_callback</span><span class="hljs-params">(<span class="hljs-keyword">const</span> String &amp; state)</span></span><br><span class="hljs-function"></span>&#123;<br>   digitalWrite(<span class="hljs-number">2</span>,HIGH);<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    Blinker.begin();<br><br>    pinMode(<span class="hljs-number">2</span>,OUTPUT);<br>    <br>    ButtonRun.attach(buttonRun_callback);<br>    ButtonBack.attach(buttonBack_callback);<br>    ButtonLeft.attach(buttonLeft_callback);<br>    ButtonRight.attach(buttonRight_callback);<br>    ButtonStop.attach(buttonStop_callback);<br><br>    ButtonOn.attach(buttonOn_callback);<br>    ButtonOff.attach(buttonOff_callback);<br>    <br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>&#123;<br> <span class="hljs-comment">// char ch=Serial.read(); // 读取输入的信息</span><br> <span class="hljs-comment">//Serial.print(ch);  //输出信息</span><br> <span class="hljs-comment">//delay(1000); </span><br>    Blinker.run();<br>&#125;<br></code></pre></div></td></tr></table></figure>
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%AE%9E%E8%B7%B5%E5%BD%95/">实践录</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Arduino/">Arduino</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%89%A9%E8%81%94%E7%BD%91/">物联网</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/hello-hexo/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hello Hexo</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"ymqRfRF4KqPviKTrJxtv3Tm2-gzGzoHsz","appKey":"LGXIPfn36xtzCvL8XrGGCuzA","path":"window.location.pathname","placeholder":"相遇即是缘分，说点什么再走吧~(/≧▽≦)/","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <i class="iconfont icon-copyright"></i> 2021 闲卧庭前远看帆 </br> 封面及部分配图源自互联网 仅作美化之用 版权归图片原作者所有 如有侵权请通过关于页头像下方邮箱联系 侵权作品会被删除</br> Powered by <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> Theme <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <i class="iconfont icon-love"></i>
+<div style="font-size: 0.85rem"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":1},"log":false});</script></body>
+</html>
