@@ -1,0 +1,610 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="Qt 信号与槽、内存管理等基本机制；Qt 网络编程； Qt 元对象系统">
+  <meta name="author" content="闲卧庭前远看帆">
+  <meta name="keywords" content="">
+  <meta name="description" content="Qt 信号与槽、内存管理等基本机制；Qt 网络编程； Qt 元对象系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Qt笔记">
+<meta property="og:url" content="https://code.阿帆的小窝.top/2022/Qt-Note/index.html">
+<meta property="og:site_name" content="闲卧庭前远看帆的博客">
+<meta property="og:description" content="Qt 信号与槽、内存管理等基本机制；Qt 网络编程； Qt 元对象系统">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/HttpFormat.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/HttpRequest.png">
+<meta property="article:published_time" content="2022-05-27T10:16:35.000Z">
+<meta property="article:modified_time" content="2022-05-27T10:37:58.762Z">
+<meta property="article:author" content="闲卧庭前远看帆">
+<meta property="article:tag" content="Qt">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/HttpFormat.png">
+  
+  <title>Qt笔记 - 闲卧庭前远看帆的博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"code.xn--yetp9bp76b6xdqv7b.top","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":80,"cursorChar":"|","loop":true},"anchorjs":{"enable":false,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>闲卧庭前远看帆の博客</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                主页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                文章
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/">
+                    
+                    分类
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/archives/">
+                    
+                    归档
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/tags/">
+                    
+                    标签
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo@main/img/morncolour05.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Qt笔记">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      闲卧庭前远看帆
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-27 18:16" pubdate>
+        2022年5月27日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.4k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      7 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Qt笔记</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年5月27日 晚上
+                
+              </p>
+            
+            <div class="markdown-body">
+              <p>Qt 信号与槽、内存管理等基本机制；Qt 网络编程； Qt 元对象系统</p>
+<span id="more"></span>
+
+<h1 id="Qt信号与槽"><a href="#Qt信号与槽" class="headerlink" title="Qt信号与槽"></a>Qt信号与槽</h1><h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p><strong>实现对象和对象之间的通信</strong>，当一个对象发生改变会发送一个信号通知另一个对象执行一个函数，这个函数称之为槽</p>
+<h2 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h2><p>信号的声明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++">signals:<br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">signaleA</span><span class="hljs-params">()</span></span>;<br>	...<br></code></pre></div></td></tr></table></figure>
+
+<p>信号只需要声明，不需要定义</p>
+<p>信号的发送：</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-function">emit <span class="hljs-title">signalA</span><span class="hljs-params">()</span></span>;<br></code></pre></div></td></tr></table></figure>
+
+<h2 id="槽"><a href="#槽" class="headerlink" title="槽"></a>槽</h2><p>槽的声明：只在头文件进行，关键字：<code>slots</code>, 声明槽函数后必须实现 在.cpp文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++"><span class="hljs-keyword">private</span> slots:<br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">slotA</span><span class="hljs-params">()</span></span>;<span class="hljs-comment">//实现和普通函数没有区别</span><br></code></pre></div></td></tr></table></figure>
+
+<p>实现：在对应源文件中，必须实现</p>
+<p>调用：</p>
+<blockquote>
+<p>信号调用：与槽函数关联的信号被发送时，槽函数被调用</p>
+<p>普通调用：通过函数名或函数指针调用</p>
+</blockquote>
+<h2 id="信号与槽的连接"><a href="#信号与槽的连接" class="headerlink" title="信号与槽的连接"></a>信号与槽的连接</h2><h3 id="连接方式："><a href="#连接方式：" class="headerlink" title="连接方式："></a>连接方式：</h3><blockquote>
+<ul>
+<li>手动连接：</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++">&gt;<span class="hljs-built_in">connect</span>(Obj_sender, <span class="hljs-built_in">SIGNAL</span>(<span class="hljs-built_in">my_signal</span>()), Obj_receiver, <span class="hljs-built_in">SLOT</span>(), ConnectType);<br></code></pre></div></td></tr></table></figure>
+
+<p>最后一个参数，可以省略，默认为：自动方式</p>
+<ul>
+<li>自动连接：通过命名连接</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++">&gt;<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">MyClass::on_obj_signal</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//槽函数</span><br>&gt;on_发送信号的对象名_发送的信号（）<br></code></pre></div></td></tr></table></figure>
+</blockquote>
+<h3 id="连接规则："><a href="#连接规则：" class="headerlink" title="连接规则："></a>连接规则：</h3><ul>
+<li>信号的参数可以比槽函数多，反之不可以</li>
+<li>信号与槽，可以一对一，一对多，多对一</li>
+<li>信号与信号也可以连接：发起方信号参数要多于接收方，连接成功后，触发接收方信号不会触发发起方信号</li>
+<li>连接可以被删除：<code>disconnect</code></li>
+<li>同一个连接可以绑定多次，触发以此信号会执行多个槽函数，执行顺序按照绑定顺序</li>
+</ul>
+<h3 id="连接类型"><a href="#连接类型" class="headerlink" title="连接类型"></a>连接类型</h3><ul>
+<li><strong>直连方式</strong>(DirectConnection)：槽函数在信号发送时候，直接被调用，（建议）槽函数运行于信号发送者的线程</li>
+<li><strong>排队方式</strong>(QueuedConnection)：（建议）槽函数运行于信号接收者所在线程。发送信号之后，槽函数不会立刻被调用，等到接收者当前函数执行完，进入事件循环，槽函数被调用</li>
+<li><strong>自动方式</strong>(AutoConnection)：默认方式，如果接收者和发送者在同一线程，自动调用直连方式，在不同线程，自动调用排队方式</li>
+<li><strong>阻塞排队方式</strong>(BlockingQueuedConnection)：槽函数调用时机和排队方式一致，不过发送完信号后，发送者所在线程会阻塞，直到槽函数运行完。<strong>发送者和接收者绝不能在一个线程，否则死锁</strong></li>
+<li><strong>唯一连接方式</strong>(UniqueConnection)：和前面几个结合使用，这个flag可以通过按位或（|），和以上四个结合使用。当设置这个flag时候，某个信号和槽已经连接时，再重连就失败，避免重复连接。</li>
+</ul>
+<h1 id="Qt元对象系统"><a href="#Qt元对象系统" class="headerlink" title="Qt元对象系统"></a>Qt元对象系统</h1><h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><p>Qt元对象系统提供对象间的通信机制：信号与槽，以及运行时类型信息和动态属性系统的支持，是对标准C++ 的拓展，使Qt更好的实现GUI图形用户界面编程</p>
+<h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><ul>
+<li><p>QObject</p>
+</li>
+<li><p>类声明私有段中Q_OBJECT宏</p>
+</li>
+<li><p>元对象编译器（moc）</p>
+<blockquote>
+<p>moc 工作流程：</p>
+<ul>
+<li>确认类继承自QObject</li>
+<li>寻找Q_OBJECT宏</li>
+<li>类的一般信息</li>
+<li>Qt关键字（slots、signals）</li>
+</ul>
+<p>moc从头文件获取数据，编译成moc文件，再和.cpp编译的文件共同生成中间代码文件</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="Qt的几种机制"><a href="#Qt的几种机制" class="headerlink" title="Qt的几种机制"></a>Qt的几种机制</h1><ul>
+<li><p>内存管理机制</p>
+<p>Qt的内存管理机制，让Qt定义的类，继承一个父类，父类作为管理者管理子类，当父类销毁，子类跟着销毁</p>
+<p>两个类继承 <code>QObject</code>，且有<code>Q_OBJECT</code> 宏</p>
+</li>
+<li><p>信号与槽机制</p>
+<p>实现对象与对象间的通信</p>
+</li>
+<li><p>事件机制</p>
+</li>
+</ul>
+<h1 id="Qt实现Http通信"><a href="#Qt实现Http通信" class="headerlink" title="Qt实现Http通信"></a>Qt实现Http通信</h1><h2 id="Http协议数据格式"><a href="#Http协议数据格式" class="headerlink" title="Http协议数据格式"></a>Http协议数据格式</h2><img src="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/HttpFormat.png" srcset="/img/loading.gif" lazyload style="zoom:150%;" />
+
+<h2 id="请求数据方式"><a href="#请求数据方式" class="headerlink" title="请求数据方式"></a>请求数据方式</h2><img src="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/HttpRequest.png" srcset="/img/loading.gif" lazyload style="zoom:80%;" />
+
+<ul>
+<li><p>GET 是http协议的默认请求方法，日常使用GET方法来提交表单数据。</p>
+<p>但GET方法的表单数据只经过简单的编码，同时作为URL的一部分向Web服务器发送，存在安全隐患，此外提交的数据量不能太大</p>
+</li>
+<li><p>POST 是GET方法的代替，克服了GET方法不安全和数据量小的缺点。</p>
+<p>POST方法，将数据作为标准数据发送给Web服务器，放在附属体中，更加安全且可以调教大批量数据</p>
+</li>
+</ul>
+<h2 id="Qt实现Http通信常用类"><a href="#Qt实现Http通信常用类" class="headerlink" title="Qt实现Http通信常用类"></a>Qt实现Http通信常用类</h2><ul>
+<li><p>QNetworkRequest — 网络连接请求类</p>
+<blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C++"><span class="hljs-function">QNetworkRequest <span class="hljs-title">netWorkRequest</span><span class="hljs-params">(QUrl(<span class="hljs-string">&quot;https://l-by.cn/yinyue/api.php&quot;</span>))</span></span>; <span class="hljs-comment">//URL地址</span><br></code></pre></div></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++">netWorkRequest.<span class="hljs-built_in">setRawHeader</span>(<span class="hljs-string">&quot;Content-type&quot;</span>,<span class="hljs-string">&quot;application/x-www-form-urlencoded; charset=UTF-8&quot;</span>); <span class="hljs-comment">//标头</span><br></code></pre></div></td></tr></table></figure></blockquote>
+</li>
+<li><p>QNetworkAccessManager — 网络访问管理器</p>
+<blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++">QString body = <span class="hljs-built_in">QString</span>(<span class="hljs-string">&quot;types=search&amp;count=100&amp;source=netease&amp;pages=1&amp;name=%1&quot;</span>).<span class="hljs-built_in">arg</span>(searchData);<span class="hljs-comment">//附属体</span><br>QNetworkReply *networkReply = netWorkAccessMangager-&gt;<span class="hljs-built_in">post</span>(netWorkRequest,body.<span class="hljs-built_in">toUtf8</span>()); <span class="hljs-comment">//让网络管理类通过POST方式发送请求，返回一个网络回复类指针</span><br></code></pre></div></td></tr></table></figure></blockquote>
+</li>
+<li><p>QNetworkReply — 网络回复类</p>
+<blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++">networkReply-&gt;<span class="hljs-built_in">readAll</span>(); <span class="hljs-comment">//读取所有数据返回一个QByteArray</span><br><span class="hljs-built_in">readLine</span>(qint64 maxSize = <span class="hljs-number">0</span>);<span class="hljs-comment">//按行读取 </span><br><span class="hljs-built_in">read</span>(<span class="hljs-keyword">char</span> *data, qint64 maxSize);<span class="hljs-comment">//读取最大字节为maxSize,存到data中，返回读取到的字节数</span><br></code></pre></div></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs c++">signals:<br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">readRead</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//网络中有数据发送给你触发该信号</span><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">finished</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">//所有数据接收完成触发该信号</span><br>	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">error</span><span class="hljs-params">(QNetworkReply::NetworkError code)</span></span>; <span class="hljs-comment">//网络连接出错触发该信号</span><br></code></pre></div></td></tr></table></figure></blockquote>
+</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Qt/">Qt</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Qt/">Qt</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/Git-Command/">
+                        <span class="hidden-mobile">Git_Command</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"ymqRfRF4KqPviKTrJxtv3Tm2-gzGzoHsz","appKey":"LGXIPfn36xtzCvL8XrGGCuzA","path":"window.location.pathname","placeholder":"相遇即是缘分，说点什么再走吧~(/≧▽≦)/","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <i class="iconfont icon-copyright"></i> 2022 闲卧庭前远看帆 </br> 封面及部分配图源自互联网 仅作美化之用 版权归图片原作者所有 如有侵权请通过关于页头像下方邮箱联系 侵权作品会被删除</br> Powered by <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> Theme <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <i class="iconfont icon-love"></i>
+<div style="font-size: 0.85rem"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":1},"log":false});</script></body>
+</html>
