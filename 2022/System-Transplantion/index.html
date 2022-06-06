@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/Linux_Kernel_Compile.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Zoom-EobardThawne/MyPicGo/img/Linux_Boot_Process.png">
 <meta property="article:published_time" content="2022-05-28T09:56:38.000Z">
-<meta property="article:modified_time" content="2022-06-06T11:16:13.213Z">
+<meta property="article:modified_time" content="2022-06-06T11:29:17.818Z">
 <meta property="article:author" content="闲卧庭前远看帆">
 <meta property="article:tag" content="ARM">
 <meta property="article:tag" content="Linux">
@@ -749,7 +749,7 @@
 <blockquote>
 <ol>
 <li><p>寻找编译器路径 : </p>
-<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-built_in">which</span> arm-none-linux-gnueabi-gcc<br>   <br><span class="hljs-comment"># /home/linux/03.fs4412/toolchain/gcc-4.6.4/bin/arm-none-linux-gnueabi-gcc</span><br></code></pre></div></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-built_in">which</span> arm-none-linux-gnueabi-gcc<br>         <br><span class="hljs-comment"># /home/linux/03.fs4412/toolchain/gcc-4.6.4/bin/arm-none-linux-gnueabi-gcc</span><br></code></pre></div></td></tr></table></figure>
 
 <p>进入 该路径下的 bin 目录发现都是编译器的文件</p>
 <p>我们再退到上一级目录，即 <code> /home/linux/03.fs4412/toolchain/gcc-4.6.4/</code> 下搜寻</p>
@@ -762,7 +762,7 @@
 <li><p>将 <strong>lib 目录</strong> 拷贝到 _install 目录下 <strong>注意：</strong>拷贝整个目录 结尾加 <code>-a</code> 参数</p>
 </li>
 <li><p>删除静态库 和 共享库文件中的符号表 — 确保 lib 目录大小不超过 8M</p>
-<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> _install/lib<br><span class="hljs-comment"># 删除静态库</span><br>sudo rm -rf *.a<br><span class="hljs-comment"># 删除所有的符号表</span><br>arm-none-linux-guneabi-strip *<br><span class="hljs-comment"># strip 命令 : 从特定文件中剥掉一些符号信息和调试信息，使文件变小。</span><br>   <br><span class="hljs-comment"># 这里会出现权限不够，或者是找不到命令的错误，如果出现上述错误则 : </span><br><span class="hljs-built_in">which</span> arm-none-linux-guneabi-strip<br><span class="hljs-comment"># 复制路径 如:</span><br><span class="hljs-comment"># /home/linux/03.fs4412/toolchain/gcc-4.6.4/bin/arm-none-linux-gnueabi-strip</span><br><span class="hljs-comment"># sudo 刚刚复制的路径 *</span><br>sudo /home/linux/03.fs4412/toolchain/gcc-4.6.4/bin/arm-none-linux-gnueabi-strip *<br></code></pre></div></td></tr></table></figure></li>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> _install/lib<br><span class="hljs-comment"># 删除静态库</span><br>sudo rm -rf *.a<br><span class="hljs-comment"># 删除所有的符号表</span><br>arm-none-linux-guneabi-strip *<br><span class="hljs-comment"># strip 命令 : 从特定文件中剥掉一些符号信息和调试信息，使文件变小。</span><br>         <br><span class="hljs-comment"># 这里会出现权限不够，或者是找不到命令的错误，如果出现上述错误则 : </span><br><span class="hljs-built_in">which</span> arm-none-linux-guneabi-strip<br><span class="hljs-comment"># 复制路径 如:</span><br><span class="hljs-comment"># /home/linux/03.fs4412/toolchain/gcc-4.6.4/bin/arm-none-linux-gnueabi-strip</span><br><span class="hljs-comment"># sudo 刚刚复制的路径 *</span><br>sudo /home/linux/03.fs4412/toolchain/gcc-4.6.4/bin/arm-none-linux-gnueabi-strip *<br></code></pre></div></td></tr></table></figure></li>
 </ol>
 </blockquote>
 </li>
@@ -795,12 +795,8 @@
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ sudo mkdir initrd<br></code></pre></div></td></tr></table></figure></li>
 <li><p>将这个磁盘镜像文件挂载 initrd/ 下</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ sudo mount -t ext2 ramdisk ./initrd<br></code></pre></div></td></tr></table></figure></li>
-<li><p> 将我们的文件系统复制到 ramdisk 中</p>
-</li>
-</ol>
-   <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">sudo cp /<span class="hljs-built_in">source</span>/rootfs/* ./initrd –a<br></code></pre></div></td></tr></table></figure>
-
-<ol start="6">
+<li><p>将我们的文件系统复制到 ramdisk 中</p>
+<figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">sudo cp /<span class="hljs-built_in">source</span>/rootfs/* ./initrd –a<br></code></pre></div></td></tr></table></figure></li>
 <li><p>卸载 initrd</p>
 <figure class="highlight bash"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs bash">$ sudo umount ./initrd<br></code></pre></div></td></tr></table></figure></li>
 <li><p>压缩 ramdisk 为 ramdisk.gz </p>
@@ -911,7 +907,7 @@
 </ol>
 </blockquote>
 <h3 id="2-u-boot-代码开始运行"><a href="#2-u-boot-代码开始运行" class="headerlink" title="2. u-boot 代码开始运行"></a>2. u-boot 代码开始运行</h3><ol>
-<li><p>**u-boot 第一阶段 (BL2 代码)**：</p>
+<li><p><strong>u-boot 第一阶段 (BL2 代码)：</strong></p>
 <blockquote>
 <ol>
 <li>设置ARM核为SVC模式</li>
@@ -923,7 +919,7 @@
 </ol>
 </blockquote>
 </li>
-<li><p>**u-boot 第二阶段 (BL3 代码)**：</p>
+<li><p><strong>u-boot 第二阶段 (BL3 代码)：</strong></p>
 <blockquote>
 <ol>
 <li><p>设置ARM核为SVC模式</p>
